@@ -21,7 +21,7 @@ import { MetamaskAdapter } from "@web3auth/metamask-adapter";
 import { TorusWalletAdapter } from "@web3auth/torus-evm-adapter";
 
 const clientId =
-  "BEglQSgt4cUWcj6SKRdu5QkOXTsePmMcusG5EAoyjyOYKlVRjIF1iCNnMOTfpzCiunHRrMui8TIwQPXdkQ8Yxuk"; // get from https://dashboard.web3auth.io
+  "BGyZf5eBCFKM-lHrZpi7iwZkhTogZ0kDqaX3thbz0IkRvnnrv8N3wcFnLLJSQOodcWi68EraSaEfiwbMRRqQm-s"; // get from https://dashboard.web3auth.io
 
 function App() {
   const [web3auth, setWeb3auth] = useState<Web3Auth | null>(null);
@@ -39,8 +39,8 @@ function App() {
           clientId,
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x1f92",
+            rpcTarget: "https://sphinx.shardeum.org/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           uiConfig: {
             appName: "W3A",
@@ -144,8 +144,8 @@ function App() {
           web3AuthNetwork: "cyan",
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x1f92",
+            rpcTarget: "https://sphinx.shardeum.org/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
         });
         // we can change the above settings using this function
@@ -153,8 +153,8 @@ function App() {
           sessionTime: 86400, // 1 day in seconds
           chainConfig: {
             chainNamespace: CHAIN_NAMESPACES.EIP155,
-            chainId: "0x1",
-            rpcTarget: "https://rpc.ankr.com/eth", // This is the public RPC we have added, please pass on your own endpoint while creating an app
+            chainId: "0x1f92",
+            rpcTarget: "https://sphinx.shardeum.org/", // This is the public RPC we have added, please pass on your own endpoint while creating an app
           },
           web3AuthNetwork: "cyan",
         });
@@ -260,20 +260,6 @@ function App() {
     uiConsole();
   };
 
-  const initiateTopUp = async () => {
-    if (!torusPlugin) {
-      uiConsole("torus plugin not initialized yet");
-      return;
-    }
-    torusPlugin.initiateTopup("moonpay", {
-      selectedAddress: "0x8cFa648eBfD5736127BbaBd1d3cAe221B45AB9AF",
-      selectedCurrency: "USD",
-      fiatValue: 100,
-      selectedCryptoCurrency: "ETH",
-      chainNetwork: "mainnet",
-    });
-  };
-
   const getChainId = async () => {
     if (!provider) {
       uiConsole("provider not initialized yet");
@@ -290,14 +276,14 @@ function App() {
       return;
     }
     const newChain = {
-      chainId: "0x5",
-      displayName: "Goerli",
+      chainId: "0x1f92",
+      displayName: "Shardeum Sphinx",
       chainNamespace: CHAIN_NAMESPACES.EIP155,
-      tickerName: "Goerli",
-      ticker: "ETH",
+      tickerName: "Sphinx",
+      ticker: "SHM",
       decimals: 18,
-      rpcTarget: "https://rpc.ankr.com/eth_goerli",
-      blockExplorer: "https://goerli.etherscan.io",
+      rpcTarget: "https://sphinx.shardeum.org/",
+      blockExplorer: "https://explorer-sphinx.shardeum.org/",
     };
     await web3auth?.addChain(newChain);
     uiConsole("New Chain Added");
@@ -332,15 +318,6 @@ function App() {
     uiConsole(balance);
   };
 
-  const sendTransaction = async () => {
-    if (!provider) {
-      uiConsole("provider not initialized yet");
-      return;
-    }
-    const rpc = new RPC(provider);
-    const receipt = await rpc.sendTransaction();
-    uiConsole(receipt);
-  };
 
   const signMessage = async () => {
     if (!provider) {
@@ -397,11 +374,7 @@ function App() {
             Show Wallet Connect Modal
           </button>
         </div>
-        <div>
-          <button onClick={initiateTopUp} className="card">
-            initiateTopUp
-          </button>
-        </div>
+
         <div>
           <button onClick={getChainId} className="card">
             Get Chain ID
@@ -432,11 +405,11 @@ function App() {
             Sign Message
           </button>
         </div>
-        <div>
+        {/* <div>
           <button onClick={sendTransaction} className="card">
             Send Transaction
           </button>
-        </div>
+        </div> */}
         <div>
           <button onClick={getPrivateKey} className="card">
             Get Private Key
@@ -466,20 +439,10 @@ function App() {
         <a target="_blank" href="http://web3auth.io/" rel="noreferrer">
           Web3Auth{" "}
         </a>
-        & ReactJS Ethereum Example
+        & Shardeum Example
       </h1>
 
       <div className="grid">{loggedIn ? loggedInView : unloggedInView}</div>
-
-      <footer className="footer">
-        <a
-          href="https://github.com/Web3Auth/examples/tree/main/web-modal-sdk/evm/react-evm-modal-example"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Source code
-        </a>
-      </footer>
     </div>
   );
 }
